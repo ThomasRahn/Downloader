@@ -3,12 +3,9 @@ package main;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
-
 import file.Downloadable;
-import json.JSONManager;
+import managers.JSONManager;
 import network.DropApi;
 
 public class Launcher {
@@ -24,9 +21,9 @@ public class Launcher {
 			
 			List<Downloadable> vids = JSONManager.getVideos(json.getJSONArray("data"));
 			
-			
-			vids.get(0).download();
-			
+			for(Downloadable d : vids){
+				d.download();
+			}
 			
 		} catch (MalformedURLException e) {
 			System.out.println("Unable to access api");

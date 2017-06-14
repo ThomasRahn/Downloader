@@ -3,24 +3,23 @@ package file;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
+
+import managers.DisplayManager;
 
 public class Video implements Downloadable {
 	
 	private String download_location = System.getProperty("user.dir") + "\\downloads\\";
 	private boolean is_downloaded;
-	
+	private int id;
 	private String url;
 	private String file_name;
 	private File file;
 	
 	private long size; 
 	
-	public Video(String url, String file_name){
+	public Video(int id, String url, String file_name){
+		this.id = id;
 		this.url = url;
 		this.file_name = file_name;
 		
@@ -33,6 +32,9 @@ public class Video implements Downloadable {
 		this.size = size;
 	}
 	
+	public int getId(){
+		return this.id;
+	}
 	
 	@Override
 	public void download() {
@@ -54,7 +56,9 @@ public class Video implements Downloadable {
 				            fout.write(data, 0, count);
 				            sum_count += count;
 				            if (size > 0) {
-				            	update_progress((sum_count / size * 100.0));
+				            	double percentage = (sum_count / size * 100.0);
+				            	
+				            	DisplayManager.display_progress_bar(percentage);
 				            }
 				        }
 				    } finally {
@@ -69,22 +73,9 @@ public class Video implements Downloadable {
 			} catch(Exception e ){
 				//log exception
 				System.out.println(e.getMessage());
-			} 
+			} finally {
+				System.out.println(this.file_name + " has finished downloading");
+			}
 		}
 	}
-	
-	
-	private void update_progress(double progress_percentage) {
-	    final int width = 50; // progress bar width in chars
-
-	    System.out.print("\r[");
-	    int i = 0;
-	    for (; i <= (int)(progress_percentage*width); i++) {
-	      System.out.print(".");
-	    }
-	    for (; i < width; i++) {
-	      System.out.print(" ");
-	    }
-	    System.out.print("]");
-	  }
 }
