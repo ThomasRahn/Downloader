@@ -37,6 +37,18 @@ public class Video implements Downloadable {
 	}
 	
 	@Override
+	public void store() {
+		
+	}
+	
+	/*
+	 * @param none
+	 * @return none
+	 * 
+	 * This method is used to download the file from the url and store is in the default location
+	 * 
+	 */
+	@Override
 	public void download() {
 		if(!is_downloaded){
 			System.out.println(download_location);

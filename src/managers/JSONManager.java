@@ -10,12 +10,24 @@ import file.Video;
 public class JSONManager {
 	
 	
+	/*
+	 * @param String json_str
+	 * 
+	 * Parse the String parameter into a JSONObject 
+	 */
 	public static JSONObject toJSON(String json_str){
 		JSONObject json = new JSONObject(json_str);
 		
 		return json;
 	}
 	
+	
+	/*
+	 * @param JSONArray
+	 * @return List<Downloadable>
+	 * 
+	 * This method will iterate through the JSONArray and create a Downloadable object and return the list.
+	 */
 	public static List<Downloadable> getVideos(JSONArray arr){
 		List<Downloadable> downloads = new ArrayList<Downloadable>(arr.length());
 		
