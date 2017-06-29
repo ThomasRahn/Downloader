@@ -4,8 +4,11 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.net.URL;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 import managers.DisplayManager;
+import storage.SQLite;
 
 public class Video implements Downloadable {
 	
@@ -36,9 +39,27 @@ public class Video implements Downloadable {
 		return this.id;
 	}
 	
+	/*
+	 * @param none
+	 * @return none
+	 * 
+	 * This method will store the video object into the video table.
+	 */
 	@Override
 	public void store() {
+		SQLite sq = SQLite.getInstance();
 		
+		//insert or ignore into (in the case of duplication)
+		try (PreparedStatement ps = sq.connection.prepareStatement("INSERT OR IGNORE INTO video (id, path, downloaded) VALUES (?,?,?)")){
+			ps.setInt(1, this.id);
+			ps.setString(2, this.file.getPath());
+			ps.setBoolean(3, this.is_downloaded);
+			
+			ps.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/*
@@ -59,7 +80,7 @@ public class Video implements Downloadable {
 				FileOutputStream fout = null;
 				    try {
 				        in = new BufferedInputStream(item_url.openStream());
-				        fout = new FileOutputStream(file_name);
+				        fout = new FileOutputStream(file.getAbsolutePath());
 				        double sum_count = 0.0;
 				        
 				        final byte data[] = new byte[1024];

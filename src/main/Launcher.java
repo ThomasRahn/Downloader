@@ -25,12 +25,14 @@ public class Launcher {
 			SQLite.getInstance().create_structure();
 			
 			for(Downloadable d : vids){
-				d.download();
+				d.store();
+				//d.download();
 			}
 			
 			
 			
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.out.println("Unable to access api" + e.getMessage());
 		}
 	}

@@ -2,13 +2,13 @@ package storage;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class SQLite {
 	private static SQLite sql_lite = null;
-	
-	Connection connection = null;
+	public Connection connection = null;
 	
 	private SQLite() {
 		try{
@@ -37,12 +37,11 @@ public class SQLite {
 			Statement statement = connection.createStatement();
 			statement.setQueryTimeout(30);  // set timeout to 30 sec.
 			
-			statement.executeQuery("CREATE TABLE IF NOT EXISTS video (id INTEGER, path STRING, downloaded BOOLEAN);");
+			statement.executeUpdate("CREATE TABLE IF NOT EXISTS video (id PRIMARY KEY, path STRING, downloaded BOOLEAN)");
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
 }
