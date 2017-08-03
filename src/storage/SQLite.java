@@ -6,9 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class SQLite {
+public class SQLite extends Database{
 	private static SQLite sql_lite = null;
-	public Connection connection = null;
+	
 	
 	private SQLite() {
 		try{

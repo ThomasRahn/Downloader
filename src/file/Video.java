@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import managers.DisplayManager;
+import storage.Database;
 import storage.SQLite;
 
 public class Video implements Downloadable {
@@ -132,10 +133,10 @@ public class Video implements Downloadable {
 
 	@Override
 	public void set_downloaded() {
-		SQLite sq = SQLite.getInstance();
+		Database db = Database.getInstance();
 		
 		//insert or ignore into (in the case of duplication)
-		try (PreparedStatement ps = sq.connection.prepareStatement("UPDATE video SET downloaded = 1 WHERE id = ?")){
+		try (PreparedStatement ps = db.connection.prepareStatement("UPDATE video SET downloaded = 1 WHERE id = ?")){
 			ps.setInt(1, this.id);
 			
 			ps.execute();
