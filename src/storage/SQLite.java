@@ -31,17 +31,5 @@ public class SQLite {
 		return sql_lite;
 	}
 	
-	public void create_structure(){
-		
-		try {
-			Statement statement = connection.createStatement();
-			statement.setQueryTimeout(30);  // set timeout to 30 sec.
-			
-			statement.executeUpdate("CREATE TABLE IF NOT EXISTS video (id PRIMARY KEY, path STRING, downloaded BOOLEAN)");
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
 	
 }

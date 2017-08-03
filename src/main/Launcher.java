@@ -21,10 +21,10 @@ public class Launcher {
 			
 			List<Downloadable> vids = JSONManager.getVideos(json.getJSONArray("data"));
 			
-			//create DB if not already created.
-			SQLite.getInstance().create_structure();
 			
 			for(Downloadable d : vids){
+				d.create_structure(SQLite.getInstance().connection);
+				
 				d.store();
 				//d.download();
 			}

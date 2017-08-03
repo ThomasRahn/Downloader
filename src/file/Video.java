@@ -4,8 +4,10 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.net.URL;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import managers.DisplayManager;
 import storage.SQLite;
@@ -40,9 +42,6 @@ public class Video implements Downloadable {
 	}
 	
 	/*
-	 * @param none
-	 * @return none
-	 * 
 	 * This method will store the video object into the video table.
 	 */
 	@Override
@@ -50,10 +49,11 @@ public class Video implements Downloadable {
 		SQLite sq = SQLite.getInstance();
 		
 		//insert or ignore into (in the case of duplication)
-		try (PreparedStatement ps = sq.connection.prepareStatement("INSERT OR IGNORE INTO video (id, path, downloaded) VALUES (?,?,?)")){
+		try (PreparedStatement ps = sq.connection.prepareStatement("INSERT OR IGNORE INTO video (id, path, downloaded, url) VALUES (?,?,?,?)")){
 			ps.setInt(1, this.id);
 			ps.setString(2, this.file.getPath());
 			ps.setBoolean(3, this.is_downloaded);
+			ps.setString(4, this.url);
 			
 			ps.execute();
 		} catch (SQLException e) {
@@ -72,8 +72,8 @@ public class Video implements Downloadable {
 	@Override
 	public void download() {
 		if(!is_downloaded){
-			System.out.println(download_location);
-			
+			boolean error = false;
+
 			try {
 				URL item_url = new  URL(url);
 				BufferedInputStream in = null;
@@ -106,9 +106,42 @@ public class Video implements Downloadable {
 			} catch(Exception e ){
 				//log exception
 				System.out.println(e.getMessage());
+				error = true;
+				
 			} finally {
 				System.out.println(this.file_name + " has finished downloading");
 			}
+			
+			if(!error)
+				this.set_downloaded();
+		}
+	}
+	
+	public void create_structure(Connection connection){
+		
+		try {
+			Statement statement = connection.createStatement();
+			statement.setQueryTimeout(30);  // set timeout to 30 sec.
+			
+			statement.executeUpdate("CREATE TABLE IF NOT EXISTS video (id PRIMARY KEY, path STRING, downloaded BOOLEAN, url STRING)");
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void set_downloaded() {
+		SQLite sq = SQLite.getInstance();
+		
+		//insert or ignore into (in the case of duplication)
+		try (PreparedStatement ps = sq.connection.prepareStatement("UPDATE video SET downloaded = 1 WHERE id = ?")){
+			ps.setInt(1, this.id);
+			
+			ps.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }
