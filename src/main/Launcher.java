@@ -22,12 +22,14 @@ public class Launcher {
 			JSONObject json = JSONManager.toJSON(json_str);
 			
 			List<Downloadable> vids = JSONManager.getVideos(json.getJSONArray("data"));
+			
+			
 			Database db = SQLite.getInstance();
 			
 			for(Downloadable d : vids){
 				d.create_structure(db.connection);
 				
-				d.store();
+				d.store(db.connection);
 				//d.download();
 			}
 			

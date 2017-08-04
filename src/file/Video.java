@@ -46,11 +46,11 @@ public class Video implements Downloadable {
 	 * This method will store the video object into the video table.
 	 */
 	@Override
-	public void store() {
-		SQLite sq = SQLite.getInstance();
+	public void store(Connection connection) {
+		
 		
 		//insert or ignore into (in the case of duplication)
-		try (PreparedStatement ps = sq.connection.prepareStatement("INSERT OR IGNORE INTO video (id, path, downloaded, url) VALUES (?,?,?,?)")){
+		try (PreparedStatement ps = connection.prepareStatement("INSERT OR IGNORE INTO video (id, path, downloaded, url) VALUES (?,?,?,?)")){
 			ps.setInt(1, this.id);
 			ps.setString(2, this.file.getPath());
 			ps.setBoolean(3, this.is_downloaded);
@@ -125,6 +125,7 @@ public class Video implements Downloadable {
 			statement.setQueryTimeout(30);  // set timeout to 30 sec.
 			
 			statement.executeUpdate("CREATE TABLE IF NOT EXISTS video (id PRIMARY KEY, path STRING, downloaded BOOLEAN, url STRING)");
+			
 			
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -7,7 +7,7 @@ import java.sql.Connection;
  */
 public interface Downloadable {
 	public void download();
-	public void store();
+	public void store(Connection connection);
 	public void create_structure(Connection connection);
 	public void set_downloaded();
 }

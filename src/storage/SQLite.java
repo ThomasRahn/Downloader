@@ -1,13 +1,9 @@
 package storage;
 
-import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 public class SQLite extends Database{
-	private static SQLite sql_lite = null;
+	private static Database sql_lite = null;
 	
 	
 	private SQLite() {
@@ -23,7 +19,7 @@ public class SQLite extends Database{
 		}
 	}
 	
-	public static SQLite getInstance(){
+	public static Database getInstance(){
 		if(sql_lite == null){
 			sql_lite = new SQLite();
 		}
