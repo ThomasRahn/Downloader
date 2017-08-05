@@ -8,12 +8,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import managers.DisplayManager;
+import relationModel.ActiveRecord;
 import storage.Database;
-import storage.SQLite;
 
 public class Video implements Downloadable {
+	
+	private ActiveRecord record;
 	
 	private String download_location = System.getProperty("user.dir") + "\\downloads\\";
 	private boolean is_downloaded;
@@ -32,6 +33,15 @@ public class Video implements Downloadable {
 		file = new File(download_location + file_name);
 		
 		is_downloaded = file.exists();
+		
+		
+		//register active record
+		record = new ActiveRecord();
+		record.registerField("id", this.id);
+		record.registerField("url", this.url);
+		record.registerField("downloaded", this.is_downloaded);
+		record.registerField("pah", this.file.getPath());
+		
 	}
 
 	public void setSize(long size){
