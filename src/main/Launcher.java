@@ -2,9 +2,11 @@ package main;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import org.json.JSONObject;
 import file.Downloadable;
+import filters.Filter;
 import managers.JSONManager;
 import network.DropApi;
 import storage.Database;
@@ -23,6 +25,10 @@ public class Launcher {
 			
 			List<Downloadable> vids = JSONManager.getVideos(json.getJSONArray("data"));
 			
+			Filter filter = new Filter(new ArrayList<String>());
+			filter.addFilter("whose");
+			filter.addFilter("anyway");
+			
 			
 			Database db = SQLite.getInstance();
 			
@@ -30,18 +36,23 @@ public class Launcher {
 				d.create_structure(db.connection);
 				
 				d.store(db.connection);
-				//d.download();
+				if(filter.validFilter(d)){
+					System.out.println("DOWNLOADED: " + d.getName());
+					//d.download();
+				} else {
+					System.out.println("NOT DOWNLOADED: " + d.getName());
+				}
 			}
 			
-			File[] roots = File.listRoots();
-			for(int i = 0; i < roots.length ; i++){
-			    System.out.println("Root["+i+"]:" + roots[i]);
-			    Long bytes = roots[i].getFreeSpace();
-			    
-			    //convert to GBs
-			    bytes = bytes / 1024 / 1024 / 1024;
-			    System.out.println(bytes);
-			}
+//			File[] roots = File.listRoots();
+//			for(int i = 0; i < roots.length ; i++){
+//			    System.out.println("Root["+i+"]:" + roots[i]);
+//			    Long bytes = roots[i].getFreeSpace();
+//			    
+//			    //convert to GBs
+//			    bytes = bytes / 1024 / 1024 / 1024;
+//			    System.out.println(bytes);
+//			}
 			    
 			    
 			

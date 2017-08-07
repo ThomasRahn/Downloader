@@ -29,11 +29,12 @@ public class Filter {
 		if(filters.size() == 0){
 			return true;
 		}
+		String[] componenets = file.getName().split("\\.");
 		
-		String[] componenets = file.getName().split(".");
 		
 		for(String filter : filters){
 			for(String comp : componenets){
+				
 				if(filter.toLowerCase().equals(comp.toLowerCase())){
 					return true;
 				}
