@@ -16,4 +16,8 @@ public class ActiveField {
 	public String getName(){
 		return this.name;
 	}
+	
+	public Object getObject(){
+		return this.obj;
+	}
 }

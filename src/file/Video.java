@@ -156,4 +156,9 @@ public class Video implements Downloadable {
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	public String getName() {
+		return file_name;
+	}
 }
