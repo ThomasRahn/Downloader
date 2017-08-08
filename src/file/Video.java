@@ -1,13 +1,10 @@
 package file;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import managers.DisplayManager;
+import managers.DownloadManager;
 import relationModel.ActiveRecord;
 import storage.Database;
 
@@ -33,7 +30,6 @@ public class Video implements Downloadable {
 		
 		is_downloaded = file.exists();
 		
-		
 		//register active record
 		record = new ActiveRecord("video");
 		record.registerField("id", this.id);
@@ -45,6 +41,18 @@ public class Video implements Downloadable {
 
 	public void setSize(long size){
 		this.size = size;
+	}
+	
+	public long getSize(){
+		return this.size;
+	}
+	
+	public String getUrl(){
+		return this.url;
+	}
+	
+	public String getFilePath(){
+		return this.file.getAbsolutePath();
 	}
 	
 	public int getId(){
@@ -81,54 +89,15 @@ public class Video implements Downloadable {
 	 */
 	@Override
 	public void download() {
-		if(!is_downloaded){
-			boolean error = false;
-
-			try {
-				URL item_url = new  URL(url);
-				BufferedInputStream in = null;
-				FileOutputStream fout = null;
-				    try {
-				        in = new BufferedInputStream(item_url.openStream());
-				        fout = new FileOutputStream(file.getAbsolutePath());
-				        double sum_count = 0.0;
-				        
-				        final byte data[] = new byte[1024];
-				        int count;
-				        while ((count = in.read(data, 0, 1024)) != -1) {
-				            fout.write(data, 0, count);
-				            sum_count += count;
-				            if (size > 0) {
-				            	double percentage = (sum_count / size * 100.0);
-				            	
-				            	DisplayManager.display_progress_bar(percentage);
-				            }
-				        }
-				    } finally {
-				        if (in != null) {
-				            in.close();
-				        }
-				        if (fout != null) {
-				            fout.close();
-				        }
-				    }
-				
-			} catch(Exception e ){
-				//log exception
-				System.out.println(e.getMessage());
-				error = true;
-				
-			} finally {
-				System.out.println(this.file_name + " has finished downloading");
-			}
-			
-			if(!error)
-				this.set_downloaded();
-		}
+		DownloadManager.Download(this);
 	}
 	
 	public void create_structure(Connection connection){
 		record.createStructure(connection);
+	}
+	
+	public void save(Connection connection){
+		record.save(connection);
 	}
 
 	@Override
@@ -150,4 +119,6 @@ public class Video implements Downloadable {
 	public String getName() {
 		return file_name;
 	}
+	
+	
 }

@@ -10,6 +10,9 @@ public class ActiveRecord {
 	
 	private List<ActiveField> fields = null;
 	private String table_name;  
+	
+	
+	
 	public ActiveRecord(String table_name) {
 		this.fields = new ArrayList<ActiveField>();
 		this.table_name = table_name;
@@ -48,8 +51,18 @@ public class ActiveRecord {
 		}
 	}
 	
-	public void save(){
-		
+	public void save(Connection connection){
+		try{
+			String sql_query = "UPDATE " + table_name + " SET ";
+			
+			Statement statement = connection.createStatement();
+			statement.setQueryTimeout(30);
+			
+			
+			statement.executeQuery(sql_query);
+		}catch(SQLException sqle){
+			sqle.getMessage();
+		}
 	}
 	
 }
