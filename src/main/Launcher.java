@@ -44,15 +44,15 @@ public class Launcher {
 				}
 			}
 			
-//			File[] roots = File.listRoots();
-//			for(int i = 0; i < roots.length ; i++){
-//			    System.out.println("Root["+i+"]:" + roots[i]);
-//			    Long bytes = roots[i].getFreeSpace();
-//			    
-//			    //convert to GBs
-//			    bytes = bytes / 1024 / 1024 / 1024;
-//			    System.out.println(bytes);
-//			}
+			File[] roots = File.listRoots();
+			for(int i = 0; i < roots.length ; i++){
+			    System.out.println("Root["+i+"]:" + roots[i]);
+			    Long bytes = roots[i].getFreeSpace();
+			    
+			    //convert to GBs
+			    bytes = bytes / 1024 / 1024 / 1024;
+			    System.out.println(bytes);
+			}
 			    
 			    
 			

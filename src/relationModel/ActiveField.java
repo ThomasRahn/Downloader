@@ -20,4 +20,20 @@ public class ActiveField {
 	public Object getObject(){
 		return this.obj;
 	}
+	
+	public String getTypeString(){
+		if(this.obj instanceof Double){
+			return "DOUBLE";
+		}else if (this.obj instanceof Integer){
+			return "INT";
+		}else if (this.obj instanceof String){
+			return "VARCHAR";
+		}else if (this.obj instanceof Boolean){
+			return "BOOLEAN";
+		} else {
+			return "TEXT";
+		}
+		
+		
+	}
 }

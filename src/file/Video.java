@@ -7,7 +7,6 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 import managers.DisplayManager;
 import relationModel.ActiveRecord;
 import storage.Database;
@@ -36,11 +35,11 @@ public class Video implements Downloadable {
 		
 		
 		//register active record
-		record = new ActiveRecord();
+		record = new ActiveRecord("video");
 		record.registerField("id", this.id);
 		record.registerField("url", this.url);
 		record.registerField("downloaded", this.is_downloaded);
-		record.registerField("pah", this.file.getPath());
+		record.registerField("path", this.file.getPath());
 		
 	}
 
@@ -129,17 +128,7 @@ public class Video implements Downloadable {
 	}
 	
 	public void create_structure(Connection connection){
-		
-		try {
-			Statement statement = connection.createStatement();
-			statement.setQueryTimeout(30);  // set timeout to 30 sec.
-			
-			statement.executeUpdate("CREATE TABLE IF NOT EXISTS video (id PRIMARY KEY, path STRING, downloaded BOOLEAN, url STRING)");
-			
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		record.createStructure(connection);
 	}
 
 	@Override
