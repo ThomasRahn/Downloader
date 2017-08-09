@@ -1,6 +1,7 @@
 package relationModel;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -57,13 +58,34 @@ public class ActiveRecord {
 	
 	public void save(Connection connection){
 		try{
-			String sql_query = "UPDATE " + table_name + " SET ";
+			String sql_query = "INSERT OR REPLACE INTO " + table_name + " ( ";
+			int counter = 0;
+			String separator = "";
 			
-			Statement statement = connection.createStatement();
+			for(ActiveField f : fields){
+				counter++;
+				sql_query += separator + f.getName();
+				separator = ",";
+			}
+			
+			sql_query += " ) VALUES ( ";
+			
+			separator = "";
+			for(int i = 0; i < counter; i++){
+				sql_query += separator + "?";
+				separator = ",";
+			}
+			
+			sql_query += ")";
+			
+			PreparedStatement statement = connection.prepareStatement(sql_query);
 			statement.setQueryTimeout(30);
 			
+			for(int j = 0; j < fields.size(); j++){
+				statement.setObject(j+1, fields.get(j).getObject());
+			}
 			
-			statement.executeQuery(sql_query);
+			statement.execute();
 		}catch(SQLException sqle){
 			sqle.getMessage();
 		}
