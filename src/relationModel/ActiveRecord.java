@@ -19,7 +19,11 @@ public class ActiveRecord {
 	}
 	
 	public void registerField(String name, Object obj){
-		fields.add(new ActiveField(name, obj));
+		this.registerField(name, obj, "");
+	}
+	
+	public void registerField(String name, Object obj, String options){
+		fields.add(new ActiveField(name, obj, options));
 	}
 	
 	public void updateField(String name, Object obj){
@@ -39,7 +43,7 @@ public class ActiveRecord {
 			statement.setQueryTimeout(30);  // set timeout to 30 sec.
 			
 			for(ActiveField f : fields){
-				sql_query += separator + f.getName() + " " + f.getTypeString();
+				sql_query += separator + f.getName() + " " + f.getTypeString() + " " + f.getOptions();
 				separator = ",";
 			}
 			

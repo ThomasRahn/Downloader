@@ -32,7 +32,7 @@ public class Video implements Downloadable {
 		
 		//register active record
 		record = new ActiveRecord("video");
-		record.registerField("id", this.id);
+		record.registerField("id", this.id, "PRIMARY KEY");
 		record.registerField("url", this.url);
 		record.registerField("downloaded", this.is_downloaded);
 		record.registerField("path", this.file.getPath());

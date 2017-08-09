@@ -3,10 +3,12 @@ package relationModel;
 public class ActiveField {
 	private String name;
 	private Object obj;
+	private String options;
 	
-	public ActiveField(String name, Object obj){
+	public ActiveField(String name, Object obj, String options){
 		this.name = name;
 		this.obj = obj;
+		this.options = options;
 	}
 	
 	public void setObject(Object obj){
@@ -19,6 +21,10 @@ public class ActiveField {
 	
 	public Object getObject(){
 		return this.obj;
+	}
+	
+	public String getOptions(){
+		return this.options;
 	}
 	
 	public String getTypeString(){
