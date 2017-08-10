@@ -7,16 +7,23 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import storage.Database;
+import storage.SQLite;
+
 public class ActiveRecord {
 	
 	private List<ActiveField> fields = null;
 	private String table_name;  
-	
+	private Connection connection;
 	
 	
 	public ActiveRecord(String table_name) {
 		this.fields = new ArrayList<ActiveField>();
 		this.table_name = table_name;
+		
+		Database db = SQLite.getInstance();
+		
+		connection = db.connection;
 	}
 	
 	public void registerField(String name, Object obj){
@@ -36,7 +43,7 @@ public class ActiveRecord {
 	}
 	
 	
-	public void createStructure(Connection connection){
+	public void createStructure(){
 		String sql_query = "CREATE TABLE IF NOT EXISTS " + table_name + " (";
 		String separator = "";
 		try {
@@ -56,7 +63,7 @@ public class ActiveRecord {
 		}
 	}
 	
-	public void save(Connection connection){
+	public void save(){
 		try{
 			String sql_query = "INSERT OR REPLACE INTO " + table_name + " ( ";
 			int counter = 0;

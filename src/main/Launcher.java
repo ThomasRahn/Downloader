@@ -9,8 +9,6 @@ import file.Downloadable;
 import filters.Filter;
 import managers.JSONManager;
 import network.DropApi;
-import storage.Database;
-import storage.SQLite;
 
 public class Launcher {
 
@@ -30,12 +28,10 @@ public class Launcher {
 			filter.addFilter("anyway");
 			
 			
-			Database db = SQLite.getInstance();
-			
 			for(Downloadable d : vids){
-				d.create_structure(db.connection);
+				d.create_structure();
 				
-				d.store(db.connection);
+				d.store();
 				if(filter.validFilter(d)){
 					System.out.println("DOWNLOADED: " + d.getName());
 					//d.download();

@@ -1,12 +1,9 @@
 package file;
 
 import java.io.File;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import managers.DownloadManager;
 import relationModel.ActiveRecord;
-import storage.Database;
+
 
 public class Video implements Downloadable {
 	
@@ -63,8 +60,8 @@ public class Video implements Downloadable {
 	 * This method will store the video object into the video table.
 	 */
 	@Override
-	public void store(Connection connection) {
-		record.save(connection);
+	public void store() {
+		record.save();
 	}
 	
 	/*
@@ -79,27 +76,19 @@ public class Video implements Downloadable {
 		DownloadManager.Download(this);
 	}
 	
-	public void create_structure(Connection connection){
-		record.createStructure(connection);
+	public void create_structure(){
+		record.createStructure();
 	}
 	
-	public void save(Connection connection){
-		record.save(connection);
+	public void save(){
+		record.save();
 	}
 
 	@Override
 	public void set_downloaded() {
-		Database db = Database.getInstance();
+		record.updateField("downloaded", true);
 		
-		//insert or ignore into (in the case of duplication)
-		try (PreparedStatement ps = db.connection.prepareStatement("UPDATE video SET downloaded = 1 WHERE id = ?")){
-			ps.setInt(1, this.id);
-			
-			ps.execute();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		record.save();
 	}
 
 	@Override
