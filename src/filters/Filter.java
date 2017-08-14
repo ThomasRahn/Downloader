@@ -3,6 +3,7 @@ package filters;
 import java.util.List;
 
 import file.Downloadable;
+import relationModel.ActiveRecord;
 
 public class Filter {
 	private List<String> filters; 
