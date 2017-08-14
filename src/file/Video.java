@@ -77,7 +77,7 @@ public class Video implements Downloadable {
 	}
 	
 	public void create_structure(){
-		record.createStructure();
+		record.create_structure();
 	}
 	
 	public void save(){

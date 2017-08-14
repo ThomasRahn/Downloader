@@ -1,6 +1,13 @@
 package storage;
 
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
+
+import relationModel.ActiveField;
+import relationModel.ActiveRecord;
 
 public class SQLite extends Database{
 	private static Database sql_lite = null;
@@ -27,5 +34,62 @@ public class SQLite extends Database{
 		return sql_lite;
 	}
 	
+	@Override
+	public void createStructure(ActiveRecord record){
+		String sql_query = "CREATE TABLE IF NOT EXISTS " + record.getTableName() + " (";
+		String separator = "";
+		try {
+			Statement statement = connection.createStatement();
+			statement.setQueryTimeout(30);  // set timeout to 30 sec.
+			
+			for(ActiveField f : record.getFields()){
+				sql_query += separator + f.getName() + " " + f.getTypeString() + " " + f.getOptions();
+				separator = ",";
+			}
+			
+			sql_query += " )";
+			
+			statement.executeUpdate(sql_query);
+		} catch(SQLException sqle){
+			sqle.getMessage();
+		}
+	}
 	
+	@Override
+	public void save(ActiveRecord record){
+		try{
+			List<ActiveField> fields = record.getFields();
+			
+			String sql_query = "INSERT OR REPLACE INTO " + record.getTableName() + " ( ";
+			int counter = 0;
+			String separator = "";
+			
+			for(ActiveField f : fields){
+				counter++;
+				sql_query += separator + f.getName();
+				separator = ",";
+			}
+			
+			sql_query += " ) VALUES ( ";
+			
+			separator = "";
+			for(int i = 0; i < counter; i++){
+				sql_query += separator + "?";
+				separator = ",";
+			}
+			
+			sql_query += ")";
+			
+			PreparedStatement statement = connection.prepareStatement(sql_query);
+			statement.setQueryTimeout(30);
+			
+			for(int j = 0; j < fields.size(); j++){
+				statement.setObject(j+1, fields.get(j).getObject());
+			}
+			
+			statement.execute();
+		}catch(SQLException sqle){
+			sqle.getMessage();
+		}
+	}
 }

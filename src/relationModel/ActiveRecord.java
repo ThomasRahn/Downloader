@@ -14,20 +14,24 @@ public class ActiveRecord {
 	
 	private List<ActiveField> fields = null;
 	private String table_name;  
-	private Connection connection;
-	
 	
 	public ActiveRecord(String table_name) {
 		this.fields = new ArrayList<ActiveField>();
 		this.table_name = table_name;
 		
 		Database db = SQLite.getInstance();
-		
-		connection = db.connection;
 	}
 	
 	public void registerField(String name, Object obj){
 		this.registerField(name, obj, "");
+	}
+	
+	public String getTableName() {
+		return this.table_name;
+	}
+	
+	public List<ActiveField> getFields() {
+		return this.fields;
 	}
 	
 	public void registerField(String name, Object obj, String options){
@@ -42,60 +46,15 @@ public class ActiveRecord {
 		}
 	}
 	
-	
-	public void createStructure(){
-		String sql_query = "CREATE TABLE IF NOT EXISTS " + table_name + " (";
-		String separator = "";
-		try {
-			Statement statement = connection.createStatement();
-			statement.setQueryTimeout(30);  // set timeout to 30 sec.
-			
-			for(ActiveField f : fields){
-				sql_query += separator + f.getName() + " " + f.getTypeString() + " " + f.getOptions();
-				separator = ",";
-			}
-			
-			sql_query += " )";
-			
-			statement.executeUpdate(sql_query);
-		} catch(SQLException sqle){
-			sqle.getMessage();
-		}
+	public void create_structure(){
+		
 	}
 	
 	public void save(){
-		try{
-			String sql_query = "INSERT OR REPLACE INTO " + table_name + " ( ";
-			int counter = 0;
-			String separator = "";
-			
-			for(ActiveField f : fields){
-				counter++;
-				sql_query += separator + f.getName();
-				separator = ",";
-			}
-			
-			sql_query += " ) VALUES ( ";
-			
-			separator = "";
-			for(int i = 0; i < counter; i++){
-				sql_query += separator + "?";
-				separator = ",";
-			}
-			
-			sql_query += ")";
-			
-			PreparedStatement statement = connection.prepareStatement(sql_query);
-			statement.setQueryTimeout(30);
-			
-			for(int j = 0; j < fields.size(); j++){
-				statement.setObject(j+1, fields.get(j).getObject());
-			}
-			
-			statement.execute();
-		}catch(SQLException sqle){
-			sqle.getMessage();
-		}
+		
 	}
+
+	
+	
 	
 }
