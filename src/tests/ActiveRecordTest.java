@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import relationModel.ActiveRecord;
@@ -15,6 +17,7 @@ import relationModel.ActiveRecord;
 public class ActiveRecordTest {
 	private Connection connection;
 	
+	@Before
 	public void setUp() {
 		// load the sqlite-JDBC driver using the current class loader
 	    try {
@@ -30,6 +33,7 @@ public class ActiveRecordTest {
 
 	}
 	
+	@After
 	public void tearDown() {
 		try {
 			connection.close();
@@ -50,16 +54,19 @@ public class ActiveRecordTest {
 	
 	@Test
 	public void testCanCreateActiveRecordTable() throws SQLException {
+		
+		//Actual test
 		ActiveRecord record = new ActiveRecord("test");
-		
 		record.registerField("id", 1, "PRIMARY KEY");
-		
 		record.create_structure();
 		
-		System.out.println(connection);
-//		Statement statement = connection.createStatement();
-//		
-//		ResultSet rs = statement.executeQuery("SELECT * FROM test");
+		
+		//assertion
+		Statement statement = connection.createStatement();
+		ResultSet rs = statement.executeQuery("SELECT * FROM test");
+		
+		System.out.println(rs);
+		
 		
 	}
 	
