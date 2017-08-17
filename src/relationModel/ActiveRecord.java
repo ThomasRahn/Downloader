@@ -1,14 +1,7 @@
 package relationModel;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
-import storage.Database;
-import storage.SQLite;
 
 public class ActiveRecord {
 	
@@ -18,8 +11,6 @@ public class ActiveRecord {
 	public ActiveRecord(String table_name) {
 		this.fields = new ArrayList<ActiveField>();
 		this.table_name = table_name;
-		
-		Database db = SQLite.getInstance();
 	}
 	
 	public void registerField(String name, Object obj){

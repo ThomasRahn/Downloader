@@ -1,6 +1,5 @@
 package main;
 
-import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,17 +38,6 @@ public class Launcher {
 					System.out.println("NOT DOWNLOADED: " + d.getName());
 				}
 			}
-			
-			File[] roots = File.listRoots();
-			for(int i = 0; i < roots.length ; i++){
-			    System.out.println("Root["+i+"]:" + roots[i]);
-			    Long bytes = roots[i].getFreeSpace();
-			    
-			    //convert to GBs
-			    bytes = bytes / 1024 / 1024 / 1024;
-			    System.out.println(bytes);
-			}
-			    
 			    
 			
 		} catch (Exception e) {

@@ -56,6 +56,7 @@ public class ActiveRecordTest {
 		
 		record.create_structure();
 		
+		System.out.println(connection);
 //		Statement statement = connection.createStatement();
 //		
 //		ResultSet rs = statement.executeQuery("SELECT * FROM test");
