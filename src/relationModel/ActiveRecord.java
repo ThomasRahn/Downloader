@@ -2,15 +2,19 @@ package relationModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import main.Config;
+import storage.Database;
 
 public class ActiveRecord {
 	
 	private List<ActiveField> fields = null;
 	private String table_name;  
+	private Database db;
 	
 	public ActiveRecord(String table_name) {
 		this.fields = new ArrayList<ActiveField>();
 		this.table_name = table_name;
+		db = Config.getDatabase();
 	}
 	
 	public void registerField(String name, Object obj){
@@ -38,11 +42,11 @@ public class ActiveRecord {
 	}
 	
 	public void create_structure(){
-		
+		db.createStructure(this);
 	}
 	
 	public void save(){
-		
+		db.save(this);
 	}
 
 	
