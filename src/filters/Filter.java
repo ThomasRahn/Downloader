@@ -24,6 +24,10 @@ public class Filter {
 		}
 	}
 	
+	public List<String> getFilters(){
+		return filters;
+	}
+	
 	public boolean validFilter(Downloadable file) {
 		
 		if(filters.size() == 0){

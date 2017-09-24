@@ -4,7 +4,9 @@ import java.io.File;
 import managers.DownloadManager;
 import relationModel.ActiveRecord;
 
-
+/*
+ * This class is for videos and their information
+ */
 public class Video implements Downloadable {
 	
 	private ActiveRecord record;
