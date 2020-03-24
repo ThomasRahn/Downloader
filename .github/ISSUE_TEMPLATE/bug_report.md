@@ -4,7 +4,7 @@ about: Create a report to help us improve
 title: ''
 labels: ''
 assignees: ''
-project: 'ThomasRahn/Downloader/1'
+project: 'Downloader/1'
 
 ---
 
