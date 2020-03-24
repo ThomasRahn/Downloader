@@ -1,5 +1,5 @@
 blank_issues_enabled: false
 contact_links:
   - name: Custom
-    url: https://github.community/
+    url: https://github.com/ThomasRahn/Downloader/issues/new?template=custom.md&labels=Component:%20Customers&projects=ThomasRahn/Downloader/1
     about: Please ask and answer questions here.
